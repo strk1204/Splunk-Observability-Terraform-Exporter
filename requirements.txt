@@ -1,0 +1,6 @@
+charset_normalizer
+certifi
+idna
+requests
+pyhcl
+urllib3
