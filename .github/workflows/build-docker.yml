@@ -45,4 +45,6 @@ jobs:
         file: ./Dockerfile
         platforms: linux/amd64,linux/arm64
         push: true
-        tags: strk1204/stt:${{ env.TAG }}
+        tags: |
+          strk1204/stt:${{ env.TAG }}
+          ${{ github.ref == 'refs/heads/release/final' && format('strk1204/stt:latest') || '' }}
