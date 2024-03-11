@@ -36,6 +36,8 @@ This command maps the `$HOME/somedir` directory on your host system to the `/opt
 
 Please replace `somedir` with the actual directory where you want the output files to be saved. If the directory does not exist, Docker will create it for you.
 
+This application requires the usage of Python3.10 or newer.
+
 ## Usage
 
 This script exports resources from Splunk Observability Cloud to Terraform. It supports dashboards, dashboard groups, and charts. The script accepts the following command-line arguments:
