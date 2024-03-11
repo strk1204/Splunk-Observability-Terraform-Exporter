@@ -2,7 +2,7 @@ name: Build Docker Image
 
 on:
   push:
-    branches: [ "release-prep" ]
+    branches: [ "release/prep", "dev/test" ]
   pull_request:
     branches: [ "release" ]
     types: [ closed ]
@@ -30,7 +30,7 @@ jobs:
         fi
         docker build . --file Dockerfile --tag strk1204/stt:$TAG
     - name: Push to Docker Hub
-      if: github.ref == 'refs/heads/release' || github.ref == 'refs/heads/release-prep'
+      if: github.ref == 'refs/heads/release' || github.ref == 'refs/heads/release/prep' || github.ref == 'refs/heads/dev/test'
       run: |
         echo "${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}" | docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" --password-stdin
         docker push strk1204/stt:$TAG
