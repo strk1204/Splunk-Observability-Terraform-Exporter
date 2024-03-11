@@ -21,11 +21,6 @@ import shutil
 import requests
 from collections import defaultdict
 
-# Silence RE
-
-import warnings
-warnings.filterwarnings("ignore", category=SyntaxWarning)
-
 # Terraform Components
 
 
@@ -164,7 +159,6 @@ def cleanup(cwd):
 def updateIds(cwd):
     # for .tf files in cwd
     for filename in [f for f in os.listdir(cwd) if os.path.isfile(os.path.join(cwd, f)) and f.endswith('.tf')]:
-        print("brrrrrrr")
         with open(os.path.join(cwd, filename), 'r') as file:
             content = file.read()
 
@@ -192,7 +186,6 @@ def orphanCheck(cwd):
     all_dashboard_resources = []
 
     for filename in [f for f in os.listdir(cwd) if os.path.isfile(os.path.join(cwd, f)) and f.endswith('.tf')]:
-        print('for 1')
         with open(os.path.join(cwd, filename), 'r') as file:
             content = file.read()
 
@@ -209,17 +202,15 @@ def orphanCheck(cwd):
     # Check for orphan charts across all files
     print(all_dashboard_resources)
     for filename in [f for f in os.listdir(cwd) if os.path.isfile(os.path.join(cwd, f)) and f.endswith('.tf')]:
-        print("for 2")
         with open(os.path.join(cwd, filename), 'r') as file:
             content = file.read()
 
         # Check if each chart ID in the dashboard resources is referenced as a resource ID
         for dashboard_name, chart_id in all_dashboard_resources:
-            print("beep boop next level")
             if chart_id not in all_chart_resources:
                 # This is an orphan chart ID, remove it
                 content = re.sub(
-                    'chart\s*{\s*chart_id\s*=\s*"([^"]*)".*?}', '', content, flags=re.DOTALL)
+                    r'chart\s*{\s*chart_id\s*=\s*"([^"]*)".*?}', '', content, flags=re.DOTALL)
         # Check if each chart resource is referenced in a dashboard
         for chart_id in all_chart_resources:
             if not any(chart_id == id for _, id in all_dashboard_resources):
