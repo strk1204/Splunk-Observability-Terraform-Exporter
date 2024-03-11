@@ -2,10 +2,7 @@ name: Build Docker Image
 
 on:
   push:
-    branches: [ "release/prep", "dev/test" ]
-  pull_request:
-    branches: [ "release/final" ]
-    types: [ closed ]
+    branches: [ "release/prep", "dev/test", "release/final" ]
 
 jobs:
 
