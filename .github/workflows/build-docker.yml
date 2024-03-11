@@ -27,4 +27,9 @@ jobs:
           DATE=$(date +%Y%m%d)
           TAG=${{ steps.version.outputs.version }}-$DATE
         fi
-        docker build . --file Dockerfile --tag stt:$TAG
+        docker build . --file Dockerfile --tag strk1204/stt:$TAG
+    - name: Push to Docker Hub
+      if: github.ref == 'refs/heads/release' || github.ref == 'refs/heads/release-prep'
+      run: |
+        echo "${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}" | docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" --password-stdin
+        docker push strk1204/stt:$TAG
