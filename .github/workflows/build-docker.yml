@@ -2,10 +2,7 @@ name: Build Docker Image
 
 on:
   push:
-    branches: [ "release/prep", "dev/test" ]
-  pull_request:
-    branches: [ "release/final" ]
-    types: [ closed ]
+    branches: [ "release/prep", "dev/test", "release/final" ]
 
 jobs:
 
@@ -38,7 +35,7 @@ jobs:
         username: ${{ secrets.DOCKER_HUB_USERNAME }}
         password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
     - name: Build and push Docker image
-      if: github.ref == 'refs/heads/release/final' || github.ref == 'refs/heads/release/prep' || github.ref == 'refs/heads/dev/test'
+      if: github.ref == 'refs/heads/release/final' || github.ref == 'refs/heads/release/prep'
       uses: docker/build-push-action@v2
       with:
         context: .
