@@ -1,0 +1,30 @@
+name: Build Docker Image
+
+on:
+  push:
+    branches: [ "release-prep", "dev" ]
+  pull_request:
+    branches: [ "release" ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Get version from README
+      id: version
+      run: |
+        VERSION=$(grep -oP 'Version \K\S+' README.md)
+        echo "::set-output name=version::${VERSION}"
+    - name: Build the Docker image
+      run: |
+        if [[ "${{ github.ref }}" == refs/heads/release ]]; then
+          TAG=${{ steps.version.outputs.version }}
+        else
+          DATE=$(date +%Y%m%d)
+          TAG=${{ steps.version.outputs.version }}-$DATE
+        fi
+        docker build . --file Dockerfile --tag stt:$TAG
