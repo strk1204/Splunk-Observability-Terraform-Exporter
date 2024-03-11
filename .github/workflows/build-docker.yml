@@ -20,17 +20,20 @@ jobs:
       run: |
         VERSION=$(grep -oP 'Version \K\S+' README.md)
         echo "::set-output name=version::${VERSION}"
-    - name: Build the Docker image
+    - name: Set Image Tag
       run: |
-        if [[ "${{ github.ref }}" == refs/heads/release ]]; then
+        if [[ "${{ github.ref }}" == refs/heads/release/final ]]; then
           TAG=${{ steps.version.outputs.version }}
         else
           DATE=$(date +%Y%m%d)
           TAG=${{ steps.version.outputs.version }}-$DATE
         fi
+        echo "Building image with tag $TAG"
+    - name: Build Docker Image
+      run:
         docker build . --file Dockerfile --tag strk1204/stt:$TAG
     - name: Push to Docker Hub
-      if: github.ref == 'refs/heads/release' || github.ref == 'refs/heads/release/prep' || github.ref == 'refs/heads/dev/test'
+      if: github.ref == 'refs/heads/release/final' || github.ref == 'refs/heads/release/prep' || github.ref == 'refs/heads/dev/test'
       run: |
         echo "${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}" | docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" --password-stdin
         docker push strk1204/stt:$TAG
