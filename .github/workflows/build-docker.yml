@@ -23,10 +23,10 @@ jobs:
     - name: Set Image Tag
       run: |
         if [[ "${{ github.ref }}" == refs/heads/release/final ]]; then
-          TAG=${{ steps.version.outputs.version }}
+          TAG=$VERSION
         else
           DATE=$(date +%Y%m%d)
-          TAG=${{ steps.version.outputs.version }}-$DATE
+          TAG=$VERSION-$DATE
         fi
         echo "Building image with tag $TAG"
         echo "TAG=$TAG" >> $GITHUB_ENV
