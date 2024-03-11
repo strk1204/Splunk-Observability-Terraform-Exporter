@@ -200,7 +200,6 @@ def orphanCheck(cwd):
         all_dashboard_resources.extend(dashboard_resources)
 
     # Check for orphan charts across all files
-    print(all_dashboard_resources)
     for filename in [f for f in os.listdir(cwd) if os.path.isfile(os.path.join(cwd, f)) and f.endswith('.tf')]:
         with open(os.path.join(cwd, filename), 'r') as file:
             content = file.read()
