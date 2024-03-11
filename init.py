@@ -17,6 +17,8 @@ import os
 import sys
 
 from dashboardGroupClass import *
+from SLOClass import *
+from detectorClass import *
 from splunkCloud import *
 
 parser = argparse.ArgumentParser(
@@ -28,6 +30,8 @@ parser.add_argument('--api-key', '-a', type=str,
 parser.add_argument('--dashboard', '-db', type=str, help='Dashboard ID')
 parser.add_argument('--group', '-dg', type=str, help='Dashboard Group ID')
 parser.add_argument('--chart', '-ch', type=str, help='Chart ID')
+parser.add_argument('--slo', '-sl', type=str, help='SLO ID')
+parser.add_argument('--detector', '-dt', type=str, help='Detector ID')
 parser.add_argument('--verbose', '-v', action='store_true',
                     help='Enable verbose output')
 args = parser.parse_args()
@@ -35,10 +39,10 @@ args = parser.parse_args()
 # Get user input
 if args.api_key == None:
     args.api_key = input("Enter your API key: ")
-if args.dashboard == None and args.group == None and args.chart == None:
+if args.dashboard == None and args.group == None and args.chart == None and args.slo == None and args.detector == None:
     print("No resource specified, please specify a resource to create")
     user_choice = input(
-        "Would you like to create a dashboard, dashboard group or chart? (db/dg/ch): ")
+        "Would you like to create a dashboard, dashboard group, chart, SLO, or detector? (db/dg/ch/sl/dt): ")
     match user_choice:
         case "db":
             args.dashboard = input("Enter the dashboard id: ")
@@ -46,6 +50,10 @@ if args.dashboard == None and args.group == None and args.chart == None:
             args.group = input("Enter the dashboard group id: ")
         case "ch":
             args.chart = input("Enter the chart id: ")
+        case "sl":
+            args.slo = input("Enter the SLO id: ")
+        case "dt":
+            args.detector = input("Enter the detector id: ")
         case _:
             print("Invalid choice, please try again")
             sys.exit(1)
@@ -77,10 +85,10 @@ if len([f for f in os.listdir(output_dir) if os.path.isfile(os.path.join(output_
             for f in os.listdir(output_dir):
                 if os.path.isfile(os.path.join(output_dir, f)) and f.endswith('.tf') and f != "main.tf":
                     os.remove(os.path.join(output_dir, f))
-            try:   
+            try:
                 cleanup(output_dir)
             except FileNotFoundError:
-                pass # Possibly some but not all tf files existed
+                pass  # Possibly some but not all tf files existed
         case "n":
             print("Exiting...")
             sys.exit(0)
@@ -105,6 +113,12 @@ elif args.group:
 elif args.chart:
     chart = Chart(SplunkCloud, args.chart, None)
     chart._produceFile()
+elif args.slo:
+    slo = SLO(args.slo, SplunkCloud)
+    slo._produceTerraform()
+elif args.detector:
+    detector = Detector(SplunkCloud, args.detector)
+    detector._produceTerraform()
 
 # Cleanup Functions
 handleDuplicateCharts(output_dir, args.verbose)
