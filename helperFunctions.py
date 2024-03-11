@@ -21,6 +21,11 @@ import shutil
 import requests
 from collections import defaultdict
 
+# Silence RE
+
+import warnings
+warnings.filterwarnings("ignore", category=SyntaxWarning)
+
 # Terraform Components
 
 

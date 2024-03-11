@@ -1,5 +1,5 @@
 # Splunk Observability Terraform Exporter
-Version 1.0.0 (SignalFX 9.1.1)
+Version 1.0.1 (SignalFX 9.1.1)
 
 This project provides a tool for exporting Splunk Observability Cloud configurations to Terraform. It interacts with the Splunk Observability Cloud API to fetch configurations for dashboard groups, dashboards, and charts, and generates corresponding Terraform configuration files. This allows you to manage your Splunk Observability Cloud setup using infrastructure as code practices with Terraform.
 
@@ -25,11 +25,10 @@ This project provides a tool for exporting Splunk Observability Cloud configurat
 ```bash
 pip install -r requirements.txt
 ```
-Alternatively, a Docker package with all prerequisites is available. This allows you to run the exporter in a containerized environment without needing to manually install Terraform and the Python packages. You can build and run the Docker package using the following commands:
+Alternatively, a Docker package with all prerequisites is available. This allows you to run the exporter in a containerized environment without needing to manually install Terraform and the Python packages. You can run the Docker package using the following command:
 
 ```bash
-docker build -t stt:1.0.0 .
-docker run -i -v $HOME/somedir:/opt/app/terraform_output stt:1.0.0
+docker run -i -v $HOME/somedir:/opt/app/terraform_output strk1204/stt:latest
 ```
 
 This command maps the `$HOME/somedir` directory on your host system to the `/opt/app/terraform_output` directory in the Docker container. Any files that the Docker container writes to `/opt/app/terraform_output` will appear in `$HOME/somedir` on your host system, and vice versa.
