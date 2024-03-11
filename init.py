@@ -85,10 +85,10 @@ if len([f for f in os.listdir(output_dir) if os.path.isfile(os.path.join(output_
             for f in os.listdir(output_dir):
                 if os.path.isfile(os.path.join(output_dir, f)) and f.endswith('.tf') and f != "main.tf":
                     os.remove(os.path.join(output_dir, f))
-            try:   
+            try:
                 cleanup(output_dir)
             except FileNotFoundError:
-                pass # Possibly some but not all tf files existed
+                pass  # Possibly some but not all tf files existed
         case "n":
             print("Exiting...")
             sys.exit(0)
