@@ -35,7 +35,7 @@ jobs:
         username: ${{ secrets.DOCKER_HUB_USERNAME }}
         password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
     - name: Build and push Docker image
-      if: github.ref == 'refs/heads/release/final' || github.ref == 'refs/heads/release/prep'
+      if: github.ref == 'refs/heads/release/final' || github.ref == 'refs/heads/release/prep' || github.ref == 'refs/heads/dev/test'
       uses: docker/build-push-action@v2
       with:
         context: .
